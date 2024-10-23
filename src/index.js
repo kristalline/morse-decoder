@@ -37,9 +37,29 @@ const MORSE_TABLE = {
     '-----':  '0',
 };
 
-function decode(expr) {
-    // write your solution here
-}
+const getLetters = (substr, acc) => {
+    const word = substr.substring(0, 10);
+    const index = word.indexOf(1);
+    acc.push(word.substring(index, 10));
+    if (substr.length <= 10) {
+        return acc;
+    };
+    return (getLetters(substr.substring(10), acc))
+};
+
+const decode = (str) => {
+    const words = str.split('**********');
+    const result = words.map((item) => {
+        const letters = getLetters(item, []);
+        const word = letters.map((letter) => {
+            const temp = letter.replaceAll('10', '.');
+            const temp1 = temp.replaceAll('11', '-');
+            return MORSE_TABLE[temp1];
+        });
+        return word.join('')
+    })
+    return result.join(' ');
+};
 
 module.exports = {
     decode
